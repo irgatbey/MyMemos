@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MyMemos | by Efe İrgit</title>
+    <link rel="manifest" href="manifest.json" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta name="apple-mobile-web-app-title" content="Notlar" />
+    <link rel="apple-touch-icon" href="assets/icon-192.png" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/x-icon" href="assets/Icon.png" />
+    <script src="app.js" defer></script>
+  </head>
+  <body class="is-loading">
+    <svg style="display: none">
+      <symbol id="icon-menu" viewBox="0 -960 960 960">
+        <path
+          d="M120-240v-60h720v60H120Zm0-210v-60h720v60H120Zm0-210v-60h720v60H120Z"
+        />
+      </symbol>
+      <symbol id="icon-trash" viewBox="0 -960 960 960">
+        <path
+          d="M256-213.85h392.31q14.92 0 25.46-10.54t10.54-25.46V-733.3h-458.8v483.45q0 14.92 10.54 25.46t25.46 10.54ZM392.31-307.69h46.16v-307.69h-46.16v307.69Zm123.07 0h46.16v-307.69h-46.16v307.69ZM210.77-779.46h538.46V-249.8q0 39.05-27.14 66.19T656.15-156.46H256q-39.05 0-66.19-27.14T162.67-249.8V-779.46ZM162.67-825.62v-46.15h192.31v-23.08h204.61v23.08h192.31v46.15H162.67Z"
+        />
+      </symbol>
+      <symbol id="icon-folder" viewBox="0 -960 960 960">
+        <path
+          d="M140-160q-24 0-42-18t-18-42v-520q0-24 18-42t42-18h280l80 80h320q24 0 42 18t18 42v440q0 24-18 42t-42 18H140Zm0-60h680v-440H454l-80-80H140v520Zm0 0v-520 520Z"
+        />
+      </symbol>
+      <symbol id="icon-edit" viewBox="0 -960 960 960">
+        <path
+          d="M184-184v-83.77l497.23-498.77q5.15-5.48 11.07-7.47 5.93-1.99 11.99-1.99 6.06 0 11.62 1.54 5.55 1.54 11.94 7.15l38.69 37.93q5.61 6.38 7.54 12 1.92 5.63 1.92 12.25 0 6.13-2.24 12.06-2.24 5.92-7.22 11.07L267.77-184H184Zm505.15-466.46L744-704.54 704.54-744l-54.08 54.85 38.69 38.69Z"
+        />
+      </symbol>
+      <symbol id="icon-delete" viewBox="0 -960 960 960">
+        <path
+          d="M291-267.69 267.69-291l189-189-189-189L291-692.31l189 189 189-189L692.31-669l-189 189 189 189L669-267.69l-189-189-189 189Z"
+        />
+      </symbol>
+      <symbol id="icon-move-to-root" viewBox="0 -960 960 960">
+        <path
+          d="M320-160q-117 0-198.5-81.5T40-440q0-107 70.5-186.5T287-718l-63-66 56-56 160 160-160 160-56-57 59-59q-71 14-117 69t-46 127q0 83 58.5 141.5T320-240h120v80H320Zm200-360v-280h360v280H520Zm0 360v-280h360v280H520Zm80-80h200v-120H600v120Z"
+        />
+      </symbol>
+      <symbol id="icon-arrow-up" viewBox="0 -960 960 960">
+        <path d="M480-528 296-344l-56-56 240-240 240 240-56 56-184-184Z" />
+      </symbol>
+      <symbol id="icon-arrow-down" viewBox="0 -960 960 960">
+        <path d="M480-344 240-584l56-56 184 184 184-184 56 56-240 240Z" />
+      </symbol>
+      <symbol id="icon-check" viewBox="0 0 24 24">
+        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" />
+      </symbol>
+      <symbol id="icon-calendar" viewBox="0 -960 960 960">
+        <path
+          d="M220-100q-24 0-42-18t-18-42v-620q0-24 18-42t42-18h80v-60h100v60h160v-60h100v60h80q24 0 42 18t18 42v620q0 24-18 42t-42 18H220Zm0-60h520v-440H220v440Zm0-500h520v-120H220v120Zm0 0v-120 120Z"
+        />
+      </symbol>
+      <symbol id="icon-clock" viewBox="0 -960 960 960">
+        <path
+          d="M480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-400Zm0 340q142 0 241-99t99-241q0-142-99-241t-241-99q-142 0-241 99t-99 241q0 142 99 241t241 99ZM440-260h80v-264L440-580v-80h320v80H520v220Z"
+        />
+      </symbol>
+      <symbol id="icon-archive" viewBox="0 -960 960 960">
+        <path
+          d="M180-120q-24 0-42-18t-18-42v-520q0-24 18-42t42-18h600q24 0 42 18t18 42v520q0 24-18 42t-42 18H180Zm0-60h600v-520H180v520Zm170-150h260v-60H350v60ZM180-180v-520 520Z"
+        />
+      </symbol>
+      <symbol id="icon-restore" viewBox="0 -960 960 960">
+        <path
+          d="M450-160Q326-160 233-253T140-470h62q15 111 96 182t182 71q117 0 198.5-81.5T800-470q0-117-81.5-198.5T520-750H356v60h164q88 0 149 61t61 149q0 88-61 149t-149 61Zm-5-251L286-570l42-42 117 116 117-116 42 42-159 159Z"
+        />
+      </symbol>
+      <symbol id="icon-notes-view" viewBox="0 0 24 24">
+        <path
+          d="M6 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6H6zm7 1.5V9h5.5L13 3.5zM6 4h6v5a1 1 0 0 0 1 1h5v10a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"
+        />
+      </symbol>
+      <symbol id="icon-kanban-view" viewBox="0 0 24 24">
+        <path
+          d="M3 3v18h18V3H3zm8 16H5v-6h6v6zm0-8H5V5h6v6zm8 8h-6v-6h6v6zm0-8h-6V5h6v6z"
+        />
+      </symbol>
+      <symbol id="icon-sun" viewBox="0 0 24 24">
+        <path
+          d="M12,9c-1.65,0-3,1.35-3,3s1.35,3,3,3s3-1.35,3-3S13.65,9,12,9z M12,17c-2.76,0-5-2.24-5-5s2.24-5,5-5s5,2.24,5,5 S14.76,17,12,17z M12,5V3h-2v2H12z M10,19v2h2v-2H10z M17.66,7.76l1.41-1.41l-1.41-1.41l-1.41,1.41L17.66,7.76z M4.93,19.07 l-1.41,1.41l1.41,1.41l1.41-1.41L4.93,19.07z M21,12v-2h-2v2H21z M3,12v-2H1v2H3z M17.66,16.24l1.41,1.41l1.41-1.41l-1.41-1.41 L17.66,16.24z M4.93,4.93L3.51,3.51L4.93,2.1l1.41,1.41L4.93,4.93z"
+        />
+      </symbol>
+      <symbol id="icon-moon" viewBox="0 0 24 24">
+        <path
+          d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.82.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"
+        />
+      </symbol>
+      <symbol id="icon-search" viewBox="0 0 24 24">
+        <circle
+          cx="11"
+          cy="11"
+          r="7"
+          stroke="currentColor"
+          stroke-width="2"
+          fill="none"
+        />
+        <line
+          x1="16.5"
+          y1="16.5"
+          x2="21"
+          y2="21"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+      </symbol>
+    </svg>
+
+    <div class="background-aurora"></div>
+
+    <div class="app-container">
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <img
+            src="assets/fullIcon.png"
+            alt="MyMemos Logosu"
+            id="sidebarLogo"
+          />
+        </div>
+        <nav>
+          <button id="showNotesBtn" class="nav-btn active">Notlarım</button>
+          <button id="showTodosBtn" class="nav-btn">Yapılacaklar</button>
+        </nav>
+        <footer class="sidebar-footer footer-actions">
+          <div class="footer-group">
+            <button id="showArchiveBtn" class="nav-btn" title="Arşiv">
+              <svg width="24" height="24" fill="currentColor">
+                <use href="#icon-archive"></use>
+              </svg>
+              <span>Arşiv</span>
+            </button>
+          </div>
+          <div class="footer-group">
+            <button
+              id="exportDataBtn"
+              class="nav-btn theme-toggle"
+              title="Verileri Dışa Aktar"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="24px"
+                viewBox="0 0 24 24"
+                width="24px"
+                fill="currentColor"
+              >
+                <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z" />
+              </svg>
+            </button>
+            <button
+              id="importDataBtn"
+              class="nav-btn theme-toggle"
+              title="Verileri İçe Aktar"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="24px"
+                viewBox="0 0 24 24"
+                width="24px"
+                fill="currentColor"
+              >
+                <path
+                  d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"
+                />
+              </svg>
+            </button>
+            <input
+              type="file"
+              id="importFileInput"
+              accept=".json"
+              style="display: none"
+            />
+
+            <button
+              id="themeToggleBtn"
+              class="nav-btn theme-toggle"
+              title="Temayı Değiştir"
+            >
+              <div class="theme-icon-wrapper">
+                <svg
+                  class="sun-icon"
+                  width="24"
+                  height="24"
+                  fill="currentColor"
+                >
+                  <use href="#icon-sun"></use>
+                </svg>
+                <svg
+                  class="moon-icon"
+                  width="24"
+                  height="24"
+                  fill="currentColor"
+                >
+                  <use href="#icon-moon"></use>
+                </svg>
+              </div>
+            </button>
+          </div>
+        </footer>
+      </aside>
+
+      <div class="main-content">
+        <header>
+          <div class="header-main">
+            <div class="header-left">
+              <button
+                id="sidebarToggleBtn"
+                class="toggle-btn"
+                title="Menüyü Gizle/Göster"
+              >
+                <svg width="24" height="24" fill="currentColor">
+                  <use href="#icon-menu"></use>
+                </svg>
+              </button>
+              <h1 id="headerTitle">Notlarım</h1>
+            </div>
+            <div class="header-spacer"></div>
+            <div class="header-actions">
+              <button
+                id="searchBtn"
+                class="header-icon-btn"
+                title="MyMemos'da Ara"
+              >
+                <svg width="22" height="22" fill="currentColor">
+                  <use href="#icon-search"></use>
+                </svg>
+              </button>
+              <button
+                id="addColumnBtn"
+                class="add-note-btn"
+                style="display: none"
+              >
+                + Yeni Kolon Ekle
+              </button>
+              <button id="addFolderBtn" class="add-note-btn">
+                + Yeni Klasör
+              </button>
+              <button id="addBtn" class="add-note-btn">+ Yeni Not Ekle</button>
+              <button
+                id="clearArchiveBtn"
+                class="danger-btn"
+                style="display: none"
+              >
+                Arşivi Temizle
+              </button>
+            </div>
+          </div>
+        </header>
+        <main id="contentContainer" class="notes-grid"></main>
+      </div>
+    </div>
+
+    <dialog id="noteDialog">
+      <div class="dialog-content">
+        <div class="dialog-header">
+          <h2 class="dialog-title" id="dialogTitle">Yeni Not Ekle</h2>
+        </div>
+        <form id="noteForm">
+          <div class="form-group">
+            <label for="noteTitle" class="form-label">Başlık</label
+            ><input
+              type="text"
+              id="noteTitle"
+              class="form-input"
+              placeholder="Not Başlığını Girin..."
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="noteContent" class="form-label">Not İçeriği</label
+            ><textarea
+              id="noteContent"
+              class="form-textarea"
+              placeholder="Bir küçücük aslancık varmış..."
+              required
+            ></textarea>
+          </div>
+          <div class="form-group">
+            <label for="noteFolder" class="form-label">Klasör</label
+            ><select id="noteFolder" class="form-input"></select>
+          </div>
+          <div class="form-group">
+            <label for="noteColor" class="form-label">Kart Rengi</label>
+            <div class="color-picker-container">
+              <input
+                type="color"
+                id="noteColor"
+                class="form-input-color"
+                value="#1a1a1a"
+              /><button type="button" id="resetNoteColorBtn" class="cancel-btn">
+                Sıfırla
+              </button>
+            </div>
+          </div>
+          <div class="dialog-actions">
+            <button type="button" class="cancel-btn" data-close-dialog>
+              İptal</button
+            ><button type="submit" class="save-btn">Notu Kaydet</button>
+          </div>
+        </form>
+      </div>
+    </dialog>
+    <dialog id="taskDialog">
+      <div class="dialog-content">
+        <div class="dialog-header">
+          <h2 class="dialog-title" id="taskDialogTitle">Yeni Görev Ekle</h2>
+        </div>
+        <form id="taskForm">
+          <div class="form-group">
+            <label for="taskTitle" class="form-label">Görev Başlığı</label
+            ><input
+              type="text"
+              id="taskTitle"
+              class="form-input"
+              placeholder="Örn: Proje Raporu"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="taskContent" class="form-label">Görev Açıklaması</label
+            ><textarea
+              id="taskContent"
+              class="form-textarea"
+              placeholder="Örn: Yeni özellikleri ekle..."
+              required
+            ></textarea>
+          </div>
+          <div class="form-group">
+            <label for="taskColumn" class="form-label">Kolon</label
+            ><select id="taskColumn" class="form-input" required></select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Alt Görevler</label>
+            <div id="subtaskList" class="subtask-list-container"></div>
+            <button type="button" id="addSubtaskBtn" class="add-subtask-btn">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="18px"
+                viewBox="0 0 24 24"
+                width="18px"
+                fill="currentColor"
+              >
+                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+              </svg>
+              <span>Alt Görev Ekle</span>
+            </button>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Tarih ve Saat (İsteğe Bağlı)</label>
+            <div class="datetime-container">
+              <input type="date" id="taskDate" class="form-input" /><input
+                type="time"
+                id="taskTime"
+                class="form-input"
+              /><button
+                type="button"
+                id="clearDateTimeBtn"
+                class="cancel-btn"
+                title="Tarih ve saati temizle"
+              >
+                <svg width="20" height="20" fill="currentColor">
+                  <use href="#icon-trash"></use>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="taskColor" class="form-label">Kart Rengi</label>
+            <div class="color-picker-container">
+              <input
+                type="color"
+                id="taskColor"
+                class="form-input-color"
+                value="#1a1a1a"
+              /><button type="button" id="resetTaskColorBtn" class="cancel-btn">
+                Sıfırla
+              </button>
+            </div>
+          </div>
+          <div class="dialog-actions">
+            <button type="button" class="cancel-btn" data-close-dialog>
+              İptal</button
+            ><button type="submit" class="save-btn">Görevi Kaydet</button>
+          </div>
+        </form>
+      </div>
+    </dialog>
+    <dialog id="columnDialog">
+      <div class="dialog-content">
+        <div class="dialog-header">
+          <h2 class="dialog-title" id="columnDialogTitle">Yeni Kolon Ekle</h2>
+        </div>
+        <form id="columnForm">
+          <div class="form-group">
+            <label for="columnTitle" class="form-label">Kolon Başlığı</label
+            ><input
+              type="text"
+              id="columnTitle"
+              class="form-input"
+              placeholder="Örn: Yapılacaklar..."
+              required
+            />
+          </div>
+          <div class="dialog-actions">
+            <button type="button" class="cancel-btn" data-close-dialog>
+              İptal</button
+            ><button type="submit" class="save-btn">Kaydet</button>
+          </div>
+        </form>
+      </div>
+    </dialog>
+    <dialog id="viewTaskDialog">
+      <div class="dialog-content">
+        <div class="dialog-header">
+          <h2 class="dialog-title" id="viewTaskTitle">Görev Detayı</h2>
+        </div>
+        <div id="viewTaskReminder" class="task-reminder-view"></div>
+        <div
+          id="viewTaskProgressContainer"
+          class="subtask-progress-container"
+          style="margin: 1.5rem 0 0 0"
+        ></div>
+        <div id="viewTaskSubtasksList" class="view-subtasks-list"></div>
+        <div class="dialog-body dialog-body-text">
+          <p id="viewTaskContent"></p>
+        </div>
+        <div class="dialog-actions">
+          <button type="button" class="cancel-btn" data-close-dialog>
+            Kapat
+          </button>
+        </div>
+      </div>
+    </dialog>
+    <dialog id="viewNoteDialog">
+      <div class="dialog-content">
+        <div class="dialog-header">
+          <h2 class="dialog-title" id="viewNoteTitle">Not Detayı</h2>
+        </div>
+        <div class="dialog-body dialog-body-text">
+          <p id="viewNoteContent"></p>
+        </div>
+        <div class="dialog-actions">
+          <button type="button" class="cancel-btn" data-close-dialog>
+            Kapat
+          </button>
+        </div>
+      </div>
+    </dialog>
+    <dialog id="confirmDialog">
+      <div class="dialog-content">
+        <div class="dialog-header"><h2 class="dialog-title">Onay</h2></div>
+        <p id="confirmDialogMessage" class="dialog-body-text"></p>
+        <div class="dialog-actions">
+          <button type="button" class="cancel-btn" id="confirmDialogCancelBtn">
+            İptal</button
+          ><button type="button" id="confirmDialogConfirmBtn"></button>
+        </div>
+      </div>
+    </dialog>
+    <dialog id="folderDialog">
+      <div class="dialog-content">
+        <div class="dialog-header">
+          <h2 class="dialog-title" id="folderDialogTitle">
+            Yeni Klasör Oluştur
+          </h2>
+        </div>
+        <form id="folderForm">
+          <div class="form-group">
+            <label for="folderName" class="form-label">Klasör Adı</label
+            ><input
+              type="text"
+              id="folderName"
+              class="form-input"
+              placeholder="Klasör adını girin..."
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="folderColor" class="form-label">Klasör Rengi</label>
+            <div class="color-picker-container">
+              <input
+                type="color"
+                id="folderColor"
+                class="form-input-color"
+                value="#444444"
+              /><button
+                type="button"
+                id="resetFolderColorBtn"
+                class="cancel-btn"
+              >
+                Sıfırla
+              </button>
+            </div>
+          </div>
+          <div class="dialog-actions">
+            <button type="button" class="cancel-btn" data-close-dialog>
+              İptal</button
+            ><button type="submit" class="save-btn">Kaydet</button>
+          </div>
+        </form>
+      </div>
+    </dialog>
+    <dialog id="folderViewDialog" class="dialog-large">
+      <div class="dialog-content">
+        <div class="dialog-header">
+          <h2 class="dialog-title" id="folderViewTitle">Klasör İçeriği</h2>
+        </div>
+        <div id="folderViewContent" class="notes-grid"></div>
+      </div>
+    </dialog>
+
+    <div id="globalSearchOverlay" class="search-overlay">
+      <div class="search-bar-container">
+        <input
+          type="search"
+          id="globalSearchInput"
+          placeholder="MyMemos'da ara..."
+          autocomplete="off"
+        />
+      </div>
+      <div id="searchResultsContainer" class="search-results-container"></div>
+    </div>
+  </body>
+</html>
