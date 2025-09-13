@@ -1248,6 +1248,17 @@ document.addEventListener("DOMContentLoaded", () => {
       };
       reader.readAsText(file);
     });
+
+    const mainContent = document.querySelector(".main-content");
+
+    mainContent.addEventListener("click", () => {
+      // Eğer kenar çubuğu açıksa (yani collapsed class'ı YOKSA)
+      if (!appContainer.classList.contains("sidebar-collapsed")) {
+        // Kapatmak için collapsed class'ını ekle
+        appContainer.classList.add("sidebar-collapsed");
+        localStorage.setItem("sidebarCollapsed", "true");
+      }
+    });
   }
 
   // === GLOBAL ARAMA MODU FONKSİYONLARI ===
