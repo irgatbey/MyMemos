@@ -107,10 +107,24 @@
           d="M3 3v18h18V3H3zm8 16H5v-6h6v6zm0-8H5V5h6v6zm8 8h-6v-6h6v6zm0-8h-6V5h6v6z"
         />
       </symbol>
-      <symbol id="icon-sun" viewBox="0 0 24 24">
-        <path
-          d="M12,9c-1.65,0-3,1.35-3,3s1.35,3,3,3s3-1.35,3-3S13.65,9,12,9z M12,17c-2.76,0-5-2.24-5-5s2.24-5,5-5s5,2.24,5,5 S14.76,17,12,17z M12,5V3h-2v2H12z M10,19v2h2v-2H10z M17.66,7.76l1.41-1.41l-1.41-1.41l-1.41,1.41L17.66,7.76z M4.93,19.07 l-1.41,1.41l1.41,1.41l1.41-1.41L4.93,19.07z M21,12v-2h-2v2H21z M3,12v-2H1v2H3z M17.66,16.24l1.41,1.41l1.41-1.41l-1.41-1.41 L17.66,16.24z M4.93,4.93L3.51,3.51L4.93,2.1l1.41,1.41L4.93,4.93z"
-        />
+      <symbol
+        id="icon-sun"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <circle cx="12" cy="12" r="5"></circle>
+        <line x1="12" y1="1" x2="12" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="23"></line>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+        <line x1="1" y1="12" x2="3" y2="12"></line>
+        <line x1="21" y1="12" x2="23" y2="12"></line>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
       </symbol>
       <symbol id="icon-moon" viewBox="0 0 24 24">
         <path
@@ -256,17 +270,20 @@
                   <use href="#icon-search"></use>
                 </svg>
               </button>
-              <button
-                id="addColumnBtn"
-                class="add-note-btn"
-                style="display: none"
-              >
-                + Yeni Kolon Ekle
-              </button>
-              <button id="addFolderBtn" class="add-note-btn">
-                + Yeni Klasör
-              </button>
-              <button id="addBtn" class="add-note-btn">+ Yeni Not Ekle</button>
+              <div id="addContainer" class="dropdown">
+                <button id="addToggleBtn" class="header-icon-btn">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="24px"
+                    viewBox="0 0 24 24"
+                    width="24px"
+                    fill="currentColor"
+                  >
+                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+                  </svg>
+                </button>
+                <div id="addDropdown" class="dropdown-content"></div>
+              </div>
               <button
                 id="clearArchiveBtn"
                 class="danger-btn"

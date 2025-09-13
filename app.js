@@ -5,9 +5,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const appContainer = document.querySelector(".app-container");
   const contentContainer = document.getElementById("contentContainer");
   const headerTitle = document.getElementById("headerTitle");
-  const addBtn = document.getElementById("addBtn");
-  const addFolderBtn = document.getElementById("addFolderBtn");
-  const addColumnBtn = document.getElementById("addColumnBtn");
+
+  const addContainer = document.getElementById("addContainer");
+  const addToggleBtn = document.getElementById("addToggleBtn");
+  const addDropdown = document.getElementById("addDropdown");
   const dialogs = {
     note: document.getElementById("noteDialog"),
     task: document.getElementById("taskDialog"),
@@ -100,20 +101,33 @@ document.addEventListener("DOMContentLoaded", () => {
   function render() {
     const view = state.currentView;
     const headerActions = document.querySelector(".header-actions");
-    const clearArchiveBtn = document.getElementById("clearArchiveBtn"); // EKLENDİ
+    const clearArchiveBtn = document.getElementById("clearArchiveBtn");
 
     switch (view) {
       case "notes":
         headerTitle.textContent = "Notlarım";
         renderNotesView();
+        addDropdown.innerHTML = `
+      <a href="#" data-action="add-note-mobile">Yeni Not</a>
+      <a href="#" data-action="add-folder-mobile">Yeni Klasör</a>
+    `;
         break;
       case "kanban":
         headerTitle.textContent = "Yapılacaklar Panosu";
         renderKanbanBoard();
+
+        let kanbanMenuHtml = "";
+        if (state.kanban.columns.length > 0) {
+          kanbanMenuHtml += `<a href="#" data-action="add-task-mobile">Yeni Görev</a>`;
+        }
+        kanbanMenuHtml += `<a href="#" data-action="add-column-mobile">Yeni Kolon</a>`;
+
+        addDropdown.innerHTML = kanbanMenuHtml;
         break;
       case "archive":
         headerTitle.textContent = "Arşiv";
         renderArchiveView();
+        addDropdown.innerHTML = "";
         break;
     }
 
@@ -121,26 +135,13 @@ document.addEventListener("DOMContentLoaded", () => {
       view === "kanban" ? "kanban-board" : "notes-grid";
     headerActions.style.display = "flex";
 
-    // Hide folder button in kanban view
-    addFolderBtn.style.display = view === "notes" ? "block" : "none";
-    // Show search only in notes view
     document.getElementById("searchBtn").style.display =
       view === "notes" ? "flex" : "none";
-    // Show column button only in kanban view
-    addColumnBtn.style.display = view === "kanban" ? "block" : "none";
 
-    if (view === "notes") {
-      addBtn.style.display = "block";
-      addBtn.textContent = "+ Yeni Not Ekle";
-    } else if (view === "kanban") {
-      addBtn.style.display = state.kanban.columns.length > 0 ? "block" : "none";
-      addBtn.textContent = "+ Yeni Görev Ekle";
-    } else {
-      addBtn.style.display = "none";
-    }
-
-    // Arşivdeyse butonu göster, diğerlerinde gizle
     clearArchiveBtn.style.display = view === "archive" ? "block" : "none";
+
+    addContainer.style.display =
+      view === "notes" || view === "kanban" ? "inline-block" : "none";
   }
 
   // === GÖRÜNÜM DEĞİŞTİRME ===
@@ -371,7 +372,6 @@ document.addEventListener("DOMContentLoaded", () => {
   function closeDialog(dialogElement) {
     dialogElement.classList.remove("fade-in");
     dialogElement.classList.add("fade-out");
-    // Fallback: force close after 300ms if animationend doesn't fire
     setTimeout(() => {
       if (dialogElement.open) {
         dialogElement.classList.remove("fade-out");
@@ -588,7 +588,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const confirmBtn = document.getElementById("confirmDialogConfirmBtn");
       confirmBtn.textContent = confirmText;
 
-      // Önceki sınıfları temizle ve yenisini ekle
       confirmBtn.classList.remove("danger-btn", "save-btn");
       confirmBtn.classList.add(confirmClass);
 
@@ -646,11 +645,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document
       .getElementById("showArchiveBtn")
       .addEventListener("click", () => switchView("archive"));
-    addBtn.addEventListener("click", () =>
-      state.currentView === "notes" ? openNoteDialog() : openTaskDialog()
-    );
-    addFolderBtn.addEventListener("click", () => openFolderDialog());
-    addColumnBtn.addEventListener("click", () => openColumnDialog());
+
     document.getElementById("addSubtaskBtn").addEventListener("click", () => {
       addSubtaskInput();
     });
@@ -744,28 +739,22 @@ document.addEventListener("DOMContentLoaded", () => {
           ...state.kanban.archivedTasks,
         ].find((t) => t.id === state.editingTaskId);
         if (task) {
-          // Akıllı tamamlama mantığını burada kontrol et
           const allSubtasksCompleted =
             subtasks.length > 0 && subtasks.every((st) => st.completed);
 
-          // Eğer ana görev zaten tamamlanmamışsa VE tüm alt görevler yeni tamamlandıysa...
           if (!task.completed && allSubtasksCompleted) {
             try {
-              // Kullanıcıya sor
               await showConfirmDialog({
                 message:
                   "Tüm alt görevler tamamlandı. Ana görevi de tamamlandı olarak işaretlemek ister misiniz?",
                 confirmText: "Evet, İşaretle",
-                confirmClass: "save-btn", // Mavi, onay butonu stili
+                confirmClass: "save-btn",
               });
-              // Kullanıcı "Evet" derse, ana görevi tamamlandı olarak işaretle
+
               task.completed = true;
-            } catch (err) {
-              // Kullanıcı "İptal" derse hiçbir şey yapma, devam et
-            }
+            } catch (err) {}
           }
 
-          // Diğer tüm görev bilgilerini güncelle
           Object.assign(task, {
             title,
             content,
@@ -777,7 +766,6 @@ document.addEventListener("DOMContentLoaded", () => {
           });
         }
       } else {
-        // Bu yeni bir görev, normal şekilde ekle
         state.kanban.tasks.push({
           id: Date.now().toString(),
           columnId,
@@ -844,9 +832,7 @@ document.addEventListener("DOMContentLoaded", () => {
           saveData("archivedNotes");
           saveData("kanban");
           render();
-        } catch (err) {
-          // Kullanıcı iptal etti
-        }
+        } catch (err) {}
       });
 
     const handleAction = async (e) => {
@@ -1132,7 +1118,7 @@ document.addEventListener("DOMContentLoaded", () => {
             } catch (err) {}
           }
 
-          saveData("kanban"); // Değişikliği kaydet
+          saveData("kanban");
 
           openViewDialog("task", currentTaskId);
           render();
@@ -1156,7 +1142,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Dışa Aktarma Butonu
     exportDataBtn.addEventListener("click", () => {
-      // Kaydedilecek tüm veriyi tek bir objede topla
       const dataToExport = {
         notes: state.notes,
         archivedNotes: state.archivedNotes,
@@ -1165,7 +1150,7 @@ document.addEventListener("DOMContentLoaded", () => {
         theme: localStorage.getItem("MyMemos_theme") || "dark",
       };
 
-      const dataStr = JSON.stringify(dataToExport, null, 2); // Okunabilir formatta JSON
+      const dataStr = JSON.stringify(dataToExport, null, 2);
       const blob = new Blob([dataStr], { type: "application/json" });
       const url = URL.createObjectURL(blob);
 
@@ -1182,12 +1167,10 @@ document.addEventListener("DOMContentLoaded", () => {
       URL.revokeObjectURL(url);
     });
 
-    // İçe Aktarma Butonu (Gizli input'u tetikler)
     importDataBtn.addEventListener("click", () => {
       importFileInput.click();
     });
 
-    // Dosya seçildiğinde çalışacak olan olay
     importFileInput.addEventListener("change", (event) => {
       const file = event.target.files[0];
       if (!file) return;
@@ -1197,12 +1180,10 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
           const importedData = JSON.parse(e.target.result);
 
-          // Verinin geçerli olup olmadığını kontrol et
           if (!importedData.notes || !importedData.kanban) {
             throw new Error("Geçersiz yedek dosyası.");
           }
 
-          // Kullanıcıyı uyar ve onayı al
           await showConfirmDialog({
             message:
               "İçe aktarma işlemi mevcut tüm verilerinizi silecektir. Bu işlem geri alınamaz. Devam etmek istiyor musunuz?",
@@ -1210,7 +1191,6 @@ document.addEventListener("DOMContentLoaded", () => {
             confirmClass: "danger-btn",
           });
 
-          // Veriyi state'e yükle (eski versiyonlarla uyumluluk için kontroller ekle)
           state.notes = importedData.notes || [];
           state.archivedNotes = importedData.archivedNotes || [];
           state.folders = importedData.folders || [];
@@ -1225,38 +1205,60 @@ document.addEventListener("DOMContentLoaded", () => {
             ),
           };
 
-          // Temayı uygula
           const theme = importedData.theme || "dark";
           document.body.className = theme === "light" ? "light-theme" : "";
           localStorage.setItem("MyMemos_theme", theme);
 
-          // Tüm veriyi localStorage'a kaydet
           saveData("notes");
           saveData("archivedNotes");
           saveData("folders");
           saveData("kanban");
 
-          // Arayüzü yenile
           render();
           alert("Veriler başarıyla içe aktarıldı!");
         } catch (error) {
           alert(`Hata: ${error.message}`);
         } finally {
-          // Input'u sıfırla ki aynı dosyayı tekrar seçebilsin
           importFileInput.value = "";
         }
       };
       reader.readAsText(file);
     });
 
-    const mainContent = document.querySelector(".main-content");
+    addToggleBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      addDropdown.classList.toggle("show");
+    });
 
-    mainContent.addEventListener("click", () => {
-      // Eğer kenar çubuğu açıksa (yani collapsed class'ı YOKSA)
+    addDropdown.addEventListener("click", (e) => {
+      e.preventDefault();
+      const action = e.target.dataset.action;
+
+      if (action === "add-note-mobile") openNoteDialog();
+      if (action === "add-folder-mobile") openFolderDialog();
+      if (action === "add-task-mobile") openTaskDialog();
+      if (action === "add-column-mobile") openColumnDialog();
+
+      addDropdown.classList.remove("show");
+    });
+
+    window.addEventListener("click", (e) => {
+      if (addDropdown.classList.contains("show")) {
+        if (!e.target.matches("#addToggleBtn, #addToggleBtn *")) {
+          addDropdown.classList.remove("show");
+        }
+      }
+    });
+
+    appContainer.addEventListener("click", (e) => {
       if (!appContainer.classList.contains("sidebar-collapsed")) {
-        // Kapatmak için collapsed class'ını ekle
-        appContainer.classList.add("sidebar-collapsed");
-        localStorage.setItem("sidebarCollapsed", "true");
+        if (
+          !e.target.closest(".sidebar") &&
+          !e.target.closest("#sidebarToggleBtn")
+        ) {
+          appContainer.classList.add("sidebar-collapsed");
+          localStorage.setItem("sidebarCollapsed", "true");
+        }
       }
     });
   }
