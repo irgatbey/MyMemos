@@ -3,7 +3,7 @@
   "short_name": "MyMemos",
   "start_url": ".",
   "display": "standalone",
-  "background_color": "#202020",
+  "background_color": "#007aff",
   "theme_color": "#007aff",
   "description": "Kişisel not defteri ve görev düzenleme uygulaması.",
   "icons": [
