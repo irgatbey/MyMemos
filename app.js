@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const appContainer = document.querySelector(".app-container");
   const contentContainer = document.getElementById("contentContainer");
   const headerTitle = document.getElementById("headerTitle");
+  const themeColorMeta = document.querySelector('meta[name="theme-color"]');
 
   const addContainer = document.getElementById("addContainer");
   const addToggleBtn = document.getElementById("addToggleBtn");
@@ -142,6 +143,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     addContainer.style.display =
       view === "notes" || view === "kanban" ? "inline-block" : "none";
+  }
+
+  // === YARDIMCI FONKSİYONLAR ===
+  function triggerHapticFeedback() {
+    if (navigator.vibrate) {
+      navigator.vibrate(50); // 50 milisaniyelik hafif bir titreşim
+    }
   }
 
   // === GÖRÜNÜM DEĞİŞTİRME ===
@@ -848,24 +856,31 @@ document.addEventListener("DOMContentLoaded", () => {
       try {
         switch (action) {
           case "view-task":
+            triggerHapticFeedback();
             openViewDialog("task", taskId);
             break;
           case "view-note":
+            triggerHapticFeedback();
             openViewDialog("note", noteId);
             break;
           case "open-folder":
+            triggerHapticFeedback();
             openFolderViewDialog(folderId);
             break;
           case "edit-folder":
+            triggerHapticFeedback();
             openFolderDialog(folderId);
             break;
           case "edit-task":
+            triggerHapticFeedback();
             openTaskDialog(taskId);
             break;
           case "edit-note":
+            triggerHapticFeedback();
             openNoteDialog(noteId);
             break;
           case "edit-column":
+            triggerHapticFeedback();
             openColumnDialog(columnId);
             break;
           case "archive-note": {
@@ -1128,9 +1143,35 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const themeToggleBtn = document.getElementById("themeToggleBtn");
     themeToggleBtn.addEventListener("click", () => {
+      triggerHapticFeedback(); // Titreşim ekle
       const isLightTheme = document.body.classList.toggle("light-theme");
-      localStorage.setItem("MyMemos_theme", isLightTheme ? "light" : "dark");
+      const newTheme = isLightTheme ? "light" : "dark";
+      localStorage.setItem("MyMemos_theme", newTheme);
+
+      if (themeColorMeta) {
+        themeColorMeta.content = isLightTheme ? "#e4e4e4" : "#121212";
+      }
     });
+
+    // Yeni Mobil Navigasyon Menüsü Olay Dinleyicileri
+    const mobileNavContainer = document.querySelector(".mobile-nav");
+    if (mobileNavContainer) {
+      mobileNavContainer.addEventListener("click", (e) => {
+        const targetBtn = e.target.closest(".mobile-nav-btn");
+        if (!targetBtn) return;
+
+        triggerHapticFeedback();
+
+        const view = targetBtn.dataset.view;
+        switchView(view);
+
+        // Mobil menüdeki aktif butonu güncelle
+        document
+          .querySelectorAll(".mobile-nav-btn")
+          .forEach((btn) => btn.classList.remove("active"));
+        targetBtn.classList.add("active");
+      });
+    }
 
     dialogs.viewTask.addEventListener("click", handleViewDialogClick);
     setupGlobalSearch();
@@ -1226,6 +1267,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     addToggleBtn.addEventListener("click", (e) => {
+      triggerHapticFeedback();
       e.stopPropagation();
       addDropdown.classList.toggle("show");
     });
@@ -1261,6 +1303,49 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
     });
+
+    // Mobil Ayarlar Menüsü
+    const mobileSettingsToggleBtn = document.getElementById(
+      "mobileSettingsToggleBtn"
+    );
+    const mobileSettingsDropdown = document.getElementById(
+      "mobileSettingsDropdown"
+    );
+    const themeToggleBtnMobile = document.getElementById(
+      "themeToggleBtnMobile"
+    );
+    const exportDataBtnMobile = document.getElementById("exportDataBtnMobile");
+    const importDataBtnMobile = document.getElementById("importDataBtnMobile");
+
+    if (mobileSettingsToggleBtn) {
+      mobileSettingsToggleBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        triggerHapticFeedback();
+        mobileSettingsDropdown.classList.toggle("show");
+      });
+
+      themeToggleBtnMobile.addEventListener("click", () =>
+        document.getElementById("themeToggleBtn").click()
+      );
+      exportDataBtnMobile.addEventListener("click", () =>
+        document.getElementById("exportDataBtn").click()
+      );
+      importDataBtnMobile.addEventListener("click", () =>
+        document.getElementById("importDataBtn").click()
+      );
+
+      window.addEventListener("click", (e) => {
+        if (mobileSettingsDropdown.classList.contains("show")) {
+          if (
+            !e.target.matches(
+              "#mobileSettingsToggleBtn, #mobileSettingsToggleBtn *"
+            )
+          ) {
+            mobileSettingsDropdown.classList.remove("show");
+          }
+        }
+      });
+    }
   }
 
   // === GLOBAL ARAMA MODU FONKSİYONLARI ===
