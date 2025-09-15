@@ -1330,134 +1330,13 @@ dialog .custom-checkbox,
   background-color: var(--border-color);
 }
 
-/* === MOBİL UYUMLULUK STİLLERİ === */
-@media (max-width: 768px) {
-  .main-content,
-  .app-container.sidebar-collapsed .main-content {
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-  }
-  .notes-grid {
-    grid-template-columns: 1fr;
-  }
-  .sidebar {
-    transform: translateX(-110%);
-  }
-  .app-container:not(.sidebar-collapsed) .sidebar {
-    transform: translateX(0);
-  }
-  .app-container:not(.sidebar-collapsed)::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(2px);
-    z-index: 9;
-  }
-}
-
-/* === MOBİL ALT NAVİGASYON MENÜSÜ === */
-.mobile-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 60px;
-  background: rgba(42, 42, 43, 0.5);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-top: 1px solid var(--border-color);
-  display: none;
-  align-items: stretch;
-  justify-content: space-around;
-  z-index: 20;
-}
-.light-theme .mobile-nav {
-  background: rgba(255, 255, 255, 0.6);
-}
-.mobile-nav-btn {
-  background: none;
-  border: none;
-  color: var(--text-secondary);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  flex-grow: 1;
-  gap: 4px;
-  font-size: 0.7rem;
-  padding: 4px 0;
-}
-.mobile-nav-btn.active {
-  color: var(--accent-color);
-}
-@media (max-width: 768px) {
-  .mobile-nav {
-    display: flex;
-  }
-  .sidebar {
-    display: none;
-  }
-  .main-content,
-  .app-container.sidebar-collapsed .main-content {
-    padding-left: 1.5rem;
-    padding-bottom: 80px;
-  }
-  .mobile-nav-btn svg {
-    color: var(--text-primary);
-    fill: var(--text-primary);
-    transition: color 0.2s ease, fill 0.2s ease;
-  }
-  .mobile-nav-btn.active span {
-    color: var(--accent-color);
-  }
-  .mobile-nav-btn.active svg {
-    color: var(--accent-color);
-    fill: var(--accent-color);
-  }
-  .sidebar,
-  #sidebarToggleBtn {
-    display: none;
-  }
-}
-
-/* === MOBİL AYARLAR MENÜSÜ === */
+/* === MOBİL ELEMENTLER VARSAYILAN STİLLERİ (MASAÜSTÜ İÇİN) === */
+.mobile-nav,
 #mobileSettingsContainer {
   display: none;
 }
-#mobileSettingsDropdown .nav-btn {
-  background-color: transparent;
-  border: none;
-  color: var(--text-primary);
-  font-weight: 500;
-  text-align: left;
-  cursor: pointer;
-  width: 100%;
-  padding: 0.75rem 1rem;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  font-size: 0.9rem;
-  border-radius: 6px;
-  transition: background-color 0.2s ease;
-}
-#mobileSettingsDropdown .nav-btn svg {
-  fill: var(--text-primary);
-}
-.light-theme #mobileSettingsDropdown .nav-btn svg {
-  fill: var(--text-primary);
-}
-#mobileSettingsDropdown .nav-btn:hover {
-  background-color: var(--border-color);
-}
-@media (max-width: 768px) {
-  #mobileSettingsContainer {
-    display: inline-block;
-  }
-  .footer-actions {
-    display: none;
-  }
-}
+
+/* === UYGULAMA HİSSİYATI İYİLEŞTİRMELERİ === */
 
 button,
 .note-card,
@@ -1470,4 +1349,136 @@ button,
   -webkit-user-select: none;
   -webkit-touch-callout: none;
   user-select: none;
+}
+.main-content {
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 20px,
+    black 98%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 20px,
+    black 98%,
+    transparent 100%
+  );
+}
+
+/* === MOBİL UYUMLULUK === */
+@media (max-width: 768px) {
+  .main-content,
+  .app-container.sidebar-collapsed .main-content {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    padding-bottom: calc(80px + env(safe-area-inset-bottom));
+  }
+
+  .notes-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* --- GİZLENECEK MASAÜSTÜ ELEMENTLERİ --- */
+  .sidebar,
+  #sidebarToggleBtn,
+  .sidebar-footer {
+    display: none;
+  }
+
+  /* --- GÖSTERİLECEK MOBİL ELEMENTLERİ --- */
+  .mobile-nav {
+    display: flex;
+  }
+
+  #mobileSettingsContainer {
+    display: inline-block;
+  }
+
+  /* --- ALT NAVİGASYON MENÜSÜ STİLLERİ --- */
+  .mobile-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 20;
+    background: rgba(42, 42, 43, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    align-items: stretch;
+    justify-content: space-around;
+    height: calc(60px + env(safe-area-inset-bottom));
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .light-theme .mobile-nav {
+    background: rgba(255, 255, 255, 0.7);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  .mobile-nav-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+    gap: 4px;
+    font-size: 0.7rem;
+    padding: 4px 0;
+    transition: color 0.2s ease;
+  }
+  .mobile-nav-btn svg {
+    color: var(--text-secondary);
+    fill: var(--text-secondary);
+    transition: color 0.2s ease, fill 0.2s ease;
+  }
+  .mobile-nav-btn.active span {
+    color: var(--accent-color);
+  }
+  .mobile-nav-btn.active svg {
+    color: var(--accent-color);
+    fill: var(--accent-color);
+  }
+  .app-container:not(.sidebar-collapsed)::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(2px);
+    z-index: 9;
+  }
+}
+
+#mobileSettingsDropdown .nav-btn {
+  background-color: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  gap: 1rem;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+#mobileSettingsDropdown .nav-btn span {
+  white-space: nowrap;
+}
+#mobileSettingsDropdown .nav-btn.theme-toggle {
+  width: 100% !important;
+  padding: 0.75rem 1rem !important;
+}
+#mobileSettingsDropdown .nav-btn svg {
+  fill: var(--text-primary);
+  flex-shrink: 0;
+}
+#mobileSettingsDropdown .nav-btn:hover {
+  background-color: var(--border-color);
 }
