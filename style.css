@@ -100,7 +100,9 @@ header {
   justify-content: space-between;
   width: 100%;
 }
-
+.header-spacer {
+  flex-grow: 1;
+}
 .header-left {
   display: flex;
   align-items: center;
@@ -1312,7 +1314,13 @@ dialog .custom-checkbox,
   transform: scale(0.95) translateY(-10px);
   transform-origin: top right;
   transition: opacity 0.15s ease-out, transform 0.15s ease-out;
-  will-change: transform;
+}
+.sidebar,
+.dropdown-content,
+.mobile-nav,
+dialog,
+#globalSearchOverlay {
+  -webkit-transform: translateZ(0);
   transform: translateZ(0);
 }
 .dropdown-content.show {
@@ -1339,7 +1347,6 @@ dialog .custom-checkbox,
 }
 
 /* === UYGULAMA HİSSİYATI İYİLEŞTİRMELERİ === */
-
 button,
 .note-card,
 .task-card,
@@ -1376,7 +1383,7 @@ button,
     padding-left: 1.5rem;
     padding-right: 1.5rem;
     padding-bottom: calc(80px + env(safe-area-inset-bottom));
-    padding-top: env(safe-area-inset-top);
+    padding-top: calc(env(safe-area-inset-top) + 1rem);
   }
 
   .notes-grid {
@@ -1484,4 +1491,12 @@ button,
 }
 #mobileSettingsDropdown .nav-btn:hover {
   background-color: var(--border-color);
+}
+
+/* === SAYFA GEÇİŞ EFEKTİ === */
+#contentContainer {
+  transition: opacity 0.2s ease-in-out;
+}
+#contentContainer.is-changing {
+  opacity: 0;
 }

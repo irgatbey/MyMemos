@@ -173,17 +173,46 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // === GÖRÜNÜM DEĞİŞTİRME ===
   function switchView(view) {
-    state.currentView = view;
-    document
-      .querySelectorAll(".nav-btn")
-      .forEach((btn) => btn.classList.remove("active"));
-    const viewButtonMap = {
-      notes: "showNotesBtn",
-      kanban: "showTodosBtn",
-      archive: "showArchiveBtn",
-    };
-    document.getElementById(viewButtonMap[view]).classList.add("active");
-    render();
+    if (state.currentView === view) return;
+
+    const contentContainer = document.getElementById("contentContainer");
+
+    contentContainer.classList.add("is-changing");
+
+    setTimeout(() => {
+      state.currentView = view;
+
+      const viewButtonMap = {
+        notes: { desktop: "showNotesBtn", mobile: "mobileNavNotes" },
+        kanban: { desktop: "showTodosBtn", mobile: "mobileNavTodos" },
+        archive: { desktop: "showArchiveBtn", mobile: "mobileNavArchive" },
+      };
+
+      document.querySelectorAll(".nav-btn, .mobile-nav-btn").forEach((btn) => {
+        btn.classList.remove("active");
+      });
+
+      const ids = viewButtonMap[view];
+      if (ids) {
+        const desktopBtn = document.getElementById(ids.desktop);
+        const mobileBtn = document.getElementById(ids.mobile);
+        if (desktopBtn) desktopBtn.classList.add("active");
+        if (mobileBtn) mobileBtn.classList.add("active");
+      }
+
+      render();
+
+      const blurredElements = document.querySelectorAll(
+        ".mobile-nav, .dropdown-content.show"
+      );
+      blurredElements.forEach((el) => {
+        el.style.webkitBackdropFilter = "none";
+        void el.offsetHeight;
+        el.style.webkitBackdropFilter = "";
+      });
+
+      contentContainer.classList.remove("is-changing");
+    }, 200);
   }
 
   // === GÖRÜNÜM OLUŞTURMA FONKSİYONLARI ===
@@ -1183,12 +1212,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const view = targetBtn.dataset.view;
         switchView(view);
-
-        // Mobil menüdeki aktif butonu güncelle
-        document
-          .querySelectorAll(".mobile-nav-btn")
-          .forEach((btn) => btn.classList.remove("active"));
-        targetBtn.classList.add("active");
       });
     }
 
