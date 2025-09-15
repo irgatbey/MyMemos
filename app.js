@@ -147,8 +147,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // === YARDIMCI FONKSİYONLAR ===
   function triggerHapticFeedback() {
-    if (navigator.vibrate) {
-      navigator.vibrate(50); // 50 milisaniyelik hafif bir titreşim
+    // 1. API'nin tarayıcıda var olup olmadığını kontrol et
+    if ("vibrate" in navigator) {
+      // 2. iOS'te kullanıcı ayarları titreşimi engelleyebilir, bu yüzden bir uyarı verelim
+      if (
+        navigator.userAgent.includes("iPhone") ||
+        navigator.userAgent.includes("iPad")
+      ) {
+        console.log(
+          "iOS device detected. Haptic feedback may be disabled in device settings (e.g., Silent Mode)."
+        );
+      }
+
+      try {
+        // 3. Kısa ve standart bir titreşim paterni gönder
+        navigator.vibrate(10);
+      } catch (e) {
+        // 4. Olası hataları yakala ve konsola yazdır
+        console.error("Haptic feedback failed:", e);
+      }
+    } else {
+      console.log("Vibration API not supported on this browser.");
     }
   }
 
