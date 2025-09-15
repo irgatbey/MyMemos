@@ -1542,6 +1542,17 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // === BAŞLANGIÇ ===
+  window.addEventListener("load", () => {
+    const splashScreen = document.getElementById("splash-screen");
+    if (splashScreen) {
+      splashScreen.classList.add("hidden");
+      setTimeout(() => {
+        splashScreen.remove();
+        document.body.classList.remove("is-loading");
+      }, 500);
+    }
+  });
+
   loadData();
   setupEventListeners();
   render();

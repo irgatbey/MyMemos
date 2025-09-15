@@ -4,7 +4,44 @@
   box-sizing: border-box;
 }
 
-/* === TASARIM DİLİ: MİNİMALİST & ODAKLANMIŞ === */
+/* === AÇILIŞ EKRANI (SPLASH SCREEN) === */
+#splash-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--base-color);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+}
+
+#splash-screen img {
+  width: 120px;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+#splash-screen.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
 :root {
   --font-family: "Poppins", sans-serif;
   --base-color: #121212;
