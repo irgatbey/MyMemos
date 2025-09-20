@@ -197,13 +197,13 @@ header {
 .sidebar .nav-btn:hover {
   background-color: var(--sidebar-highlight-bg);
   color: var(--text-primary);
-  transform: scale(1.05);
+  transform: translateY(2px) scale(1.05);
 }
 .sidebar .nav-btn.active {
   background-color: var(--sidebar-highlight-bg);
   color: var(--text-primary);
   font-weight: 600;
-  transform: scale(0.95);
+  transform: translateY(0) scale(0.95);
 }
 .sidebar-footer {
   margin-top: auto;
@@ -231,10 +231,10 @@ header {
   background-color: var(--surface-color);
   border-color: var(--border-color);
   color: var(--text-primary);
-  transform: scale(1.05);
+  transform: translateY(2px) scale(1.05);
 }
 .toggle-btn:active {
-  transform: scale(0.95);
+  transform: translateY(0) scale(0.95);
 }
 .app-container.sidebar-collapsed .sidebar {
   transform: translateX(-110%);
@@ -264,11 +264,11 @@ header {
 }
 .add-note-btn:hover {
   filter: brightness(1.1);
-  transform: scale(1.05);
+  transform: translateY(2px) scale(1.05);
   box-shadow: 0 0 20px rgba(0, 122, 255, 0.5);
 }
 .add-note-btn:active {
-  transform: scale(0.95);
+  transform: translateY(0) scale(0.95);
 }
 .save-btn {
   background: none;
@@ -281,13 +281,13 @@ header {
 }
 .save-btn:hover {
   filter: brightness(1.1);
-  transform: scale(1.05);
+  transform: translateY(2px) scale(1.05);
   border: 2px solid var(--accent-color);
   background: var(--accent-color);
   color: var(--accent-text-color);
 }
 .save-btn:active {
-  transform: scale(0.95);
+  transform: translateY(0) scale(0.95);
 }
 .cancel-btn {
   background: var(--surface-color);
@@ -300,10 +300,10 @@ header {
 }
 .cancel-btn:hover {
   background: var(--border-color);
-  transform: scale(1.05);
+  transform: translateY(2px) scale(1.05);
 }
 .cancel-btn:active {
-  transform: scale(0.95);
+  transform: translateY(0) scale(0.95);
 }
 .danger-btn {
   background: var(--danger-color);
@@ -317,11 +317,11 @@ header {
 }
 .danger-btn:hover {
   filter: brightness(1.1);
-  transform: scale(1.05);
+  transform: translateY(2px) scale(1.05);
   box-shadow: 0 0 20px var(--danger-color);
 }
 .danger-btn:active {
-  transform: scale(0.95);
+  transform: translateY(0) scale(0.95);
 }
 .form-input,
 .form-textarea {
@@ -384,11 +384,11 @@ header {
 }
 .header-icon-btn:hover {
   background-color: var(--border-hover-color);
-  transform: scale(1.05);
+  transform: translateY(2px) scale(1.05);
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
 }
 .header-icon-btn:active {
-  transform: scale(0.95);
+  transform: translateY(0) scale(0.95);
   background-color: var(--border-color);
 }
 .light-theme .header-icon-btn {
@@ -441,7 +441,7 @@ body:not(.light-theme) .header-icon-btn svg {
 .note-card:hover,
 .task-card:hover {
   border-color: var(--border-hover-color);
-  transform: translateY(-2px);
+  transform: translateY(2px) scale(1.05);
 }
 .note-title,
 .task-title {
@@ -501,25 +501,25 @@ body:not(.light-theme) .header-icon-btn svg {
 .edit-btn:hover {
   background: white;
   color: black;
-  transform: scale(1.05);
+  transform: translateY(2px) scale(1.05);
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }
 .restore-btn:hover {
   background: var(--success-color);
   color: white;
-  transform: scale(1.05);
+  transform: translateY(2px) scale(1.05);
   box-shadow: 0 0 20px var(--success-color);
 }
 .delete-btn:hover {
   background: var(--danger-color);
   box-shadow: 0 0 20px var(--danger-color);
   color: white;
-  transform: scale(1.05);
+  transform: translateY(2px) scale(1.05);
 }
 .edit-btn:active,
 .delete-btn:active,
 .restore-btn:active {
-  transform: scale(0.8);
+  transform: translateY(0) scale(0.8);
 }
 .note-card {
   min-height: 220px;
@@ -627,7 +627,7 @@ body:not(.light-theme) .header-icon-btn svg {
 .complete-btn:hover {
   background: var(--accent-color);
   color: white;
-  transform: scale(1.1);
+  transform: translateY(2px) scale(1.1);
 }
 .task-card.is-completed .complete-btn {
   background-color: var(--accent-color);
@@ -659,12 +659,12 @@ body:not(.light-theme) .header-icon-btn svg {
 .column-actions button:hover {
   background: white;
   color: black;
-  transform: scale(1.05);
+  transform: translateY(0) scale(1.05);
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }
 .task-actions button:active,
 .column-actions button:active {
-  transform: scale(0.8);
+  transform: translateY(0) scale(0.8);
 }
 .column-actions .delete-btn:hover,
 .task-actions .delete-btn:hover {
@@ -874,7 +874,7 @@ dialog.fade-out::backdrop {
 .folder-card:hover {
   border-color: var(--border-hover-color);
   border-left-color: var(--accent-color);
-  transform: translateY(-2px);
+  transform: translateY(2px);
   background-color: var(--card-hover-bg);
 }
 .folder-icon {
@@ -1283,7 +1283,7 @@ dialog .custom-checkbox,
 .card-has-dark-bg .edit-btn:hover {
   background: white;
   color: black;
-  transform: scale(1.05);
+  transform: translateY(2px) scale(1.05);
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }
 .card-has-light-bg .delete-btn:hover,
@@ -1291,14 +1291,14 @@ dialog .custom-checkbox,
   background: var(--danger-color);
   box-shadow: 0 0 20px var(--danger-color);
   color: white;
-  transform: scale(1.05);
+  transform: translateY(2px) scale(1.05);
 }
 .card-has-light-bg .restore-btn:hover,
 .card-has-dark-bg .restore-btn:hover {
   background: var(--success-color);
   box-shadow: 0 0 20px var(--success-color);
   color: white;
-  transform: scale(1.05);
+  transform: translateY(2px) scale(1.05);
 }
 .card-has-light-bg .edit-btn,
 .card-has-dark-bg .edit-btn,
@@ -1314,7 +1314,7 @@ dialog .custom-checkbox,
 .card-has-dark-bg .delete-btn:active,
 .card-has-light-bg .restore-btn:active,
 .card-has-dark-bg .restore-btn:active {
-  transform: scale(0.8);
+  transform: translateY(0) scale(0.8);
 }
 .light-theme .sidebar {
   background: rgba(255, 255, 255, 0.6);
