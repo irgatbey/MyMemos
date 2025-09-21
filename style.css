@@ -874,7 +874,7 @@ dialog.fade-out::backdrop {
 .folder-card:hover {
   border-color: var(--border-hover-color);
   border-left-color: var(--accent-color);
-  transform: translateY(2px);
+  transform: translateY(-2px);
   background-color: var(--card-hover-bg);
 }
 .folder-icon {
@@ -898,6 +898,9 @@ dialog.dialog-large {
   overflow-y: auto;
   align-content: flex-start;
   padding-top: 1rem;
+  padding-right: 1rem;
+  padding-bottom: 1rem;
+  padding-left: 1rem;
 }
 
 /* === KLASÖR KARTI AKSİYONLARI === */
